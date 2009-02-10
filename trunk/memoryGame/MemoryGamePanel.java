@@ -34,20 +34,20 @@ import javax.swing.JPanel;
 public class MemoryGamePanel extends JPanel
 {
     private static final long serialVersionUID = 4402254398785256803L;
-    
+
     private ButtonPanel buttonPanel; // Panel for the card buttons
     private CtrlPanel ctrlPanel;     // Panel for the reset and exit buttons
     private Dimension size;          // Size of the frame
-    private String codeBase;		 // File base of the program location
-    private int bgImgNum; 			 // Random number for the background image
+    private String codeBase;         // File base of the program location
+    private int bgImgNum;            // Random number for the background image
     private ArrayList<Image> bgImageList; // List of all the background images
     ArrayList<CardButton> cardButtonList; // List of the card buttons
     ArrayList<CardButton> currButtonList; // Current list of card buttons used
-    JButton[] ctrlButtons;           // Array of the game control buttons
-    MemoryGame game;         		 // Game that controls this GUI
-    
+    JButton[] ctrlButtons; // Array of the game control buttons
+    MemoryGame game;       // Game that controls this GUI
+
     public final int NUM_IMAGES = 10; // Total number of images to chose from.
-    
+
     /*
      * Creates a new JFrame with the given title and creates its contents
      */
@@ -55,68 +55,68 @@ public class MemoryGamePanel extends JPanel
     {
         codeBase = codeBaseIn;
         bgImgNum = (int)(Math.random() * NUM_IMAGES);
-        
+
         // Control buttons based on whether is is an application or applet
         // (Applets don't need an exit buttons)
         ctrlButtons = new JButton[isApplet ? 1 : 2];
         ctrlButtons[0] = new JButton("Reset");
         if(!isApplet)
             ctrlButtons[1] = new JButton("Exit");
-        
+
         bgImageList = new ArrayList<Image>(NUM_IMAGES);
-        
+
         // Get all the background images and store them at once so the game
         // will reset quicker
         try
         {
             for(int i = 0; i < NUM_IMAGES; i++)
-                bgImageList.add(ImageLoader.getImage(
-                        new URL(codeBase + "images/" + i + "_bg.gif")));
-                        //new URL(codeBase + "images/" + i + "_bg.jpg")));
+                bgImageList.add(ImageLoader.getImage(new URL(codeBase
+                        + "images/" + i + "_bg.gif")));
+            // new URL(codeBase + "images/" + i + "_bg.jpg")));
         }
         catch(MalformedURLException e)
         {
             System.out.println("Error: " + e.getMessage());
         }
-        
+
         cardButtonList = new ArrayList<CardButton>(NUM_IMAGES * 2);
         currButtonList = new ArrayList<CardButton>(MemoryGame.NUM_CARDS);
-        
+
         // Create a list and add all the images to chose from to it.
-        // Creates and addes each images twice.
+        // Creates and adds each images twice.
         for(int i = 0; i < NUM_IMAGES; i++)
         {
             CardButton cb;
-            
+
             cb = new CardButton(i, codeBase);
             cb.setBorderPainted(false);
             cardButtonList.add(cb);
-            
+
             cb = new CardButton(i, codeBase);
             cb.setBorderPainted(false);
             cardButtonList.add(cb);
         }
-        
+
         // Creates the game controller
         game = new MemoryGame(this);
-        
+
         // Create the two panels
         buttonPanel = new ButtonPanel(getCardButtonList(), 
-                					  (Image)bgImageList.get(bgImgNum));
-        ctrlPanel = new CtrlPanel(ctrlButtons,
+                (Image)bgImageList.get(bgImgNum));
+        ctrlPanel = new CtrlPanel(ctrlButtons, 
                 (int)buttonPanel.getPreferredSize().getWidth());
-        
-        // The size is the width of either of the panels and the sum of the 
+
+        // The size is the width of either of the panels and the sum of the
         // height of the two panels.
         size = new Dimension((int)(buttonPanel.getPreferredSize().getWidth()),
-                		     (int)(buttonPanel.getPreferredSize().getHeight() + 
-                				   ctrlPanel.getPreferredSize().getHeight()));
-        
+                (int)(buttonPanel.getPreferredSize().getHeight() + 
+                        ctrlPanel.getPreferredSize().getHeight()));
+
         setLayout(new BorderLayout());
         add(buttonPanel, BorderLayout.NORTH);
         add(ctrlPanel, BorderLayout.SOUTH);
     }
-    
+
     /*
      * Resets the buttons for the button panel.
      */
@@ -128,38 +128,40 @@ public class MemoryGamePanel extends JPanel
             cb.setFaceDown();
             cb.setVisible(true);
         }
-        
+
         ctrlButtons[0].setText("Reset");
         bgImgNum = (int)(Math.random() * NUM_IMAGES);
-        buttonPanel.reset(getCardButtonList(), (Image)bgImageList.get(bgImgNum));
+        buttonPanel.reset(getCardButtonList(), 
+                (Image)bgImageList.get(bgImgNum));
         updateDisplay(0);
     }
-    
+
     /*
      * Returns a shuffled list of randomly chosen pairs from the list.
      */
     public ArrayList<CardButton> getCardButtonList()
     {
         currButtonList.clear();
-        
+
         // Starts from a random even index of the cardButtonList to get the
         // card buttons. Uses the mod operator to loop back around the index.
         int numImgs = NUM_IMAGES * 2;
-        for(int i = (int)(Math.random() * numImgs) * 2;
-        	currButtonList.size() != MemoryGame.NUM_CARDS; i += 2)
+        for(int i = (int)(Math.random() * numImgs) * 2; 
+            currButtonList.size() != MemoryGame.NUM_CARDS; i += 2)
         {
-            if((i%numImgs != bgImgNum*2) && ((i%numImgs) != bgImgNum*2+1))
+            if((i % numImgs != bgImgNum * 2) &&
+               ((i % numImgs) != bgImgNum * 2 + 1))
             {
-                currButtonList.add(cardButtonList.get(i%numImgs));
-                currButtonList.add(cardButtonList.get((i%numImgs)+1));
+                currButtonList.add(cardButtonList.get(i % numImgs));
+                currButtonList.add(cardButtonList.get((i % numImgs) + 1));
             }
         }
-        
+
         Collections.shuffle(currButtonList);
-        
+
         return currButtonList;
     }
-    
+
     /*
      * Returns the size of the frame
      */
@@ -167,12 +169,12 @@ public class MemoryGamePanel extends JPanel
     {
         return size;
     }
-    
+
     /*
-	 * redraws the panel, then waits a specified period
-	 */
-	public void updateDisplay(int millis) 
-	{
-		buttonPanel.updateDisplay(millis);
-	}
+     * redraws the panel, then waits a specified period
+     */
+    public void updateDisplay(int millis)
+    {
+        buttonPanel.updateDisplay(millis);
+    }
 }

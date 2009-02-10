@@ -33,13 +33,13 @@ public class MemoryGameDriver
     private MemoryGamePanel panel;
     private String frameTitle;
     private URL iconURL;
-    
+
     public MemoryGameDriver(String frameTitle)
     {
         String codeBase = "file:";
-        
+
         this.frameTitle = frameTitle;
-        
+
         // Get the url for the image to set as the frame's icon
         try
         {
@@ -49,21 +49,20 @@ public class MemoryGameDriver
         {
             System.out.println("Error: " + e.getMessage());
         }
-        
+
         panel = new MemoryGamePanel(codeBase, false);
         game = panel.game;
-        
-        SwingUtilities.invokeLater(
-            new Runnable()
+
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run()
             {
-                public void run()
-                {
-                    Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-                    createAndShowGUI();
-                }
-            });
+                Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+                createAndShowGUI();
+            }
+        });
     }
-    
+
     private void createAndShowGUI()
     {
         JFrame frame = new JFrame(frameTitle);
@@ -75,11 +74,10 @@ public class MemoryGameDriver
         frame.pack();
         frame.setVisible(true);
     }
-    
+
     public static void main(String[] args)
     {
-        MemoryGameDriver driver = 
-            new MemoryGameDriver("Animals Memory Game");
+        MemoryGameDriver driver = new MemoryGameDriver("Animals Memory Game");
         driver.game.playGame();
         System.exit(0);
     }
