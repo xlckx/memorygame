@@ -1,0 +1,23 @@
+=============================================================================
+
+  MEMORY GAME README
+
+  Author: Daniel Meekins
+  Contact: dmeekins - gmail
+
+  Copyright (C) 2009 Daniel Meekins
+
+=============================================================================
+
+This is an implementation of one of those simple memory games. Just click on
+two matching cards until the board is cleared.
+
+To build:
+This was written in Eclipse, so you can open this in that and compile it. Or
+from the command line, just go into the memoryGame package directory and run
+'javac *.java'. Run the createjar.bat file to create an executable jar file,
+to run the command manually from the command prompt.
+
+To run:
+java -jar MemoryGame.jar
+or open the game.html in a web browser and run the applet version.
