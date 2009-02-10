@@ -27,37 +27,37 @@ import javax.swing.JButton;
 
 public class ButtonListener implements ActionListener
 {
-    private JButton button;  // Button that was pressed
-    private Object lock; 	 // Object used to synchronize the button
+    private JButton button; // Button that was pressed
+    private Object lock; // Object used to synchronize the button
     private boolean waiting; // Whether waiting for action or not
-    
+
     public ButtonListener()
     {
         lock = new Object();
     }
-    
-    /* 
+
+    /*
      * Gets the reference to the button that was clicked on.
      */
     public void actionPerformed(ActionEvent event)
     {
         button = (JButton)event.getSource();
         waiting = false;
-        
+
         synchronized(lock)
         {
             lock.notifyAll();
         }
     }
-    
+
     /*
-     * "Pauses" the program, waiting until a button is pressed.
-     * Returns a reference to the button that was pressed.
+     * "Pauses" the program, waiting until a button is pressed. Returns a
+     * reference to the button that was pressed.
      */
     public JButton waitForButton()
     {
         waiting = true;
-        
+
         try
         {
             synchronized(lock)
@@ -69,7 +69,7 @@ public class ButtonListener implements ActionListener
         catch(InterruptedException e)
         {
         }
-        
+
         return button;
     }
 }
