@@ -1,0 +1,1 @@
+This is the simple memory game implemented in java. Just click on the cards until you find all the matching cards.
